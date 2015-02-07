@@ -31,6 +31,11 @@ var parseAPI  = {
 			}
 		});
 	},
+	
+	logoutUser: function(user) {
+		Parse.User.logOut(); 	
+		document.cookie = "userID" + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+	},
 
 	getUserEmail: function(userID, callback) {
 		var query = new Parse.Query(Parse.User);
@@ -42,6 +47,19 @@ var parseAPI  = {
 				alert("Error: " + error.code + " " + error.message);
 				callback(undefined);
 			}
+		});
+	},
+	
+	resetUserPassword: function(user) {
+		// ask user for email and Parse will send a reset password link
+		Parse.User.requestPasswordReset(user.attributes.email, {
+  			success: function() {
+    			// Password reset request was sent successfully
+  			},
+  			error: function(error) {
+				// Show the error message somewhere
+    				alert("Error: " + error.code + " " + error.message);
+  			}
 		});
 	},
 
